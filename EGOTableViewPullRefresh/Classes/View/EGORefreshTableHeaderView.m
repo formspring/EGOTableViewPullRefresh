@@ -32,7 +32,7 @@
 
 
 @interface EGORefreshTableHeaderView (Private)
-- (void)setState:(EGOPullRefreshState)aState;
+//- (void)setState:(EGOPullRefreshState)aState;
 @end
 
 @implementation EGORefreshTableHeaderView
@@ -45,7 +45,7 @@
 		
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		self.backgroundColor = [UIColor colorWithRed:226.0/255.0 green:231.0/255.0 blue:237.0/255.0 alpha:1.0];
-
+        
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, frame.size.height - 30.0f, self.frame.size.width, 20.0f)];
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		label.font = [UIFont systemFontOfSize:12.0f];
@@ -100,7 +100,7 @@
 }
 
 - (id)initWithFrame:(CGRect)frame  {
-  return [self initWithFrame:frame arrowImageName:@"blueArrow.png" textColor:TEXT_COLOR];
+    return [self initWithFrame:frame arrowImageName:@"blueArrow.png" textColor:TEXT_COLOR];
 }
 
 #pragma mark -
@@ -116,7 +116,7 @@
 		NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 		[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-
+        
 		_lastUpdatedLabel.text = [NSString stringWithFormat:@"Last Updated: %@", [dateFormatter stringFromDate:date]];
 		[[NSUserDefaults standardUserDefaults] setObject:_lastUpdatedLabel.text forKey:@"EGORefreshTableView_LastRefresh"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
@@ -126,7 +126,7 @@
 		_lastUpdatedLabel.text = nil;
 		
 	}
-
+    
 }
 
 - (void)setState:(EGOPullRefreshState)aState{
@@ -153,7 +153,7 @@
 			_statusLabel.text = NSLocalizedString(@"Pull down to refresh...", @"Pull down to refresh status");
 			[_activityView stopAnimating];
 			[CATransaction begin];
-			[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions]; 
+			[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
 			_arrowImage.hidden = NO;
 			_arrowImage.transform = CATransform3DIdentity;
 			[CATransaction commit];
@@ -166,7 +166,7 @@
 			_statusLabel.text = NSLocalizedString(@"Loading...", @"Loading Status");
 			[_activityView startAnimating];
 			[CATransaction begin];
-			[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions]; 
+			[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
 			_arrowImage.hidden = YES;
 			[CATransaction commit];
 			
@@ -182,12 +182,13 @@
 #pragma mark -
 #pragma mark ScrollView Methods
 
-- (void)egoRefreshScrollViewDidScroll:(UIScrollView *)scrollView {	
+- (void)egoRefreshScrollViewDidScroll:(UIScrollView *)scrollView {
 	
 	if (_state == EGOOPullRefreshLoading) {
 		
 		CGFloat offset = MAX(scrollView.contentOffset.y * -1, 0);
-		offset = MIN(offset, 60);
+		offset = MIN(offset, COLOR_BAR_HEIGHT);
+        DLog(@"SETTING offset %f", offset);
 		scrollView.contentInset = UIEdgeInsetsMake(offset, 0.0f, 0.0f, 0.0f);
 		
 	} else if (scrollView.isDragging) {
@@ -227,14 +228,14 @@
 		[self setState:EGOOPullRefreshLoading];
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:0.2];
-		scrollView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
+		scrollView.contentInset = UIEdgeInsetsMake(COLOR_BAR_HEIGHT, 0.0f, 0.0f, 0.0f);
 		[UIView commitAnimations];
 		
 	}
 	
 }
 
-- (void)egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)scrollView {	
+- (void)egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)scrollView {
 	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:.3];
@@ -242,7 +243,7 @@
 	[UIView commitAnimations];
 	
 	[self setState:EGOOPullRefreshNormal];
-
+    
 }
 
 

@@ -27,10 +27,12 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
+#define COLOR_BAR_HEIGHT 6.0f
+
 typedef enum{
 	EGOOPullRefreshPulling = 0,
 	EGOOPullRefreshNormal,
-	EGOOPullRefreshLoading,	
+	EGOOPullRefreshLoading,
 } EGOPullRefreshState;
 
 @protocol EGORefreshTableHeaderDelegate;
@@ -38,13 +40,13 @@ typedef enum{
 	
 	id _delegate;
 	EGOPullRefreshState _state;
-
+    
 	UILabel *_lastUpdatedLabel;
 	UILabel *_statusLabel;
 	CALayer *_arrowImage;
 	UIActivityIndicatorView *_activityView;
 	
-
+    
 }
 
 @property(nonatomic,assign) id <EGORefreshTableHeaderDelegate> delegate;
@@ -55,7 +57,7 @@ typedef enum{
 - (void)egoRefreshScrollViewDidScroll:(UIScrollView *)scrollView;
 - (void)egoRefreshScrollViewDidEndDragging:(UIScrollView *)scrollView;
 - (void)egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)scrollView;
-
+- (void)setState:(EGOPullRefreshState)aState;
 @end
 @protocol EGORefreshTableHeaderDelegate
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view;
