@@ -39,6 +39,11 @@
 
 @synthesize delegate=_delegate;
 
+- (id)initCustomWithFrame:(CGRect)frame {
+    if((self = [super initWithFrame:frame])) {
+    }
+    return self;
+}
 
 - (id)initWithFrame:(CGRect)frame arrowImageName:(NSString *)arrow textColor:(UIColor *)textColor  {
     if((self = [super initWithFrame:frame])) {
@@ -188,7 +193,7 @@
 		
 		CGFloat offset = MAX(scrollView.contentOffset.y * -1, 0);
 		offset = MIN(offset, COLOR_BAR_HEIGHT);
-        DLog(@"SETTING offset %f", offset);
+//        DLog(@"SETTING offset %f", offset);
 		scrollView.contentInset = UIEdgeInsetsMake(offset, 0.0f, 0.0f, 0.0f);
 		
 	} else if (scrollView.isDragging) {
